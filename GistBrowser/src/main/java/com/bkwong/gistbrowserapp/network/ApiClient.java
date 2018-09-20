@@ -1,6 +1,7 @@
 package com.bkwong.gistbrowserapp.network;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.bkwong.gistbrowserapp.models.Gist;
 
@@ -96,15 +97,15 @@ public class ApiClient {
             api = webClient.create(GitHubAPI.class);
 
         } catch (Exception e) {
-
+            Log.e(TAG, "Exception: " + e);
         }
     }
 
 
 
-    public void getPublicGists(Callback<Gist> callback) {
+    public void getPublicGists(Callback<ArrayList<Gist>> callback) {
         if (api != null) {
-            Call<Gist> call = api.getPublicGists();
+            Call<ArrayList<Gist>> call = api.getPublicGists();
             call.enqueue(callback);
             calls.add(call);
         }

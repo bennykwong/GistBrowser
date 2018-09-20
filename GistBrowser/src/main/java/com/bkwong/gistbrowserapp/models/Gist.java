@@ -3,9 +3,15 @@ package com.bkwong.gistbrowserapp.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Gist implements Parcelable {
 
+    @SerializedName("url")
     private String url;
+
+    @SerializedName("description")
+    private String description;
 
     public String getUrl() {
         return url;
@@ -13,6 +19,14 @@ public class Gist implements Parcelable {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 
@@ -24,10 +38,12 @@ public class Gist implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.url);
+        dest.writeString(this.description);
     }
 
-    protected Gist(Parcel in) {
+    private Gist(Parcel in) {
         this.url = in.readString();
+        this.description = in.readString();
     }
 
     public static final Parcelable.Creator<Gist> CREATOR = new Parcelable.Creator<Gist>() {

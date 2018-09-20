@@ -9,16 +9,23 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 
 import com.bkwong.gistbrowserapp.GistBrowserApplication;
 import com.bkwong.gistbrowserapp.R;
 import com.bkwong.gistbrowserapp.models.Gist;
+import com.bkwong.gistbrowserapp.models.Gists;
 import com.bkwong.gistbrowserapp.network.ApiClient;
+
+import java.util.ArrayList;
+import java.util.FormatFlagsConversionMismatchException;
 
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends BaseActivity {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,15 +36,20 @@ public class MainActivity extends BaseActivity {
 
         ApiClient apiClient = ApiClient.getApiClient(GistBrowserApplication.getAppContext());
 
-        Callback<Gist> callBack = new Callback<Gist>() {
+        Callback<ArrayList<Gist>> callBack = new Callback<ArrayList<Gist>>() {
             @Override
-            public void onResponse(retrofit2.Call<Gist> call, Response<Gist> response) {
-                Log.d("benny", "print out the response" + response.body().toString());
+            public void onResponse(retrofit2.Call<ArrayList<Gist>> call, Response<ArrayList<Gist>> response) {
+                Log.d(TAG, "print out the response" + response.body().toString());
+                ArrayList<Gist> publicGists = response.body();
+                for(Gist gist : publicGists) {
+                    Log.d(TAG, "url: " + gist.getUrl());
+                    Log.d(TAG, "description: " + gist.getDescription());
+                }
 
             }
 
             @Override
-            public void onFailure(retrofit2.Call<Gist> call, Throwable t) {
+            public void onFailure(retrofit2.Call<ArrayList<Gist>> call, Throwable t) {
 
             }
         };

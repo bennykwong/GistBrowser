@@ -1,24 +1,21 @@
 package com.bkwong.gistbrowserapp.views.activity;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.Toolbar;
-import android.telecom.Call;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 
 import com.bkwong.gistbrowserapp.GistBrowserApplication;
 import com.bkwong.gistbrowserapp.R;
 import com.bkwong.gistbrowserapp.models.Gist;
-import com.bkwong.gistbrowserapp.models.Gists;
 import com.bkwong.gistbrowserapp.network.ApiClient;
+import com.bkwong.gistbrowserapp.views.adapter.CustomAdapter;
 
 import java.util.ArrayList;
-import java.util.FormatFlagsConversionMismatchException;
 
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,12 +24,26 @@ public class MainActivity extends BaseActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    private static RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
+    private static RecyclerView recyclerView;
+    private static ArrayList<Gist> publicGists;
+    static View.OnClickListener myOnClickListener;
+    private static ArrayList<Integer> removedItems;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
 
         ApiClient apiClient = ApiClient.getApiClient(GistBrowserApplication.getAppContext());
 
@@ -40,11 +51,14 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onResponse(retrofit2.Call<ArrayList<Gist>> call, Response<ArrayList<Gist>> response) {
                 Log.d(TAG, "print out the response" + response.body().toString());
-                ArrayList<Gist> publicGists = response.body();
+                publicGists = response.body();
                 for(Gist gist : publicGists) {
                     Log.d(TAG, "url: " + gist.getUrl());
                     Log.d(TAG, "description: " + gist.getDescription());
                 }
+
+                adapter = new CustomAdapter(publicGists);
+                recyclerView.setAdapter(adapter);
 
             }
 
@@ -55,14 +69,8 @@ public class MainActivity extends BaseActivity {
         };
         apiClient.getPublicGists(callBack);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
+
     }
 
     @Override

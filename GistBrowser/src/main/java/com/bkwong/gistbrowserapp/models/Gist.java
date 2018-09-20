@@ -13,6 +13,9 @@ public class Gist implements Parcelable {
     @SerializedName("description")
     private String description;
 
+    @SerializedName("owner")
+    private Owner owner;
+
     public String getUrl() {
         return url;
     }
@@ -27,6 +30,14 @@ public class Gist implements Parcelable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Owner getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Owner owner) {
+        this.owner = owner;
     }
 
 

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.bkwong.gistbrowserapp.R;
 import com.bkwong.gistbrowserapp.models.Gist;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -22,12 +23,14 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         TextView textViewName;
         TextView textViewDescription;
         ImageView imageViewIcon;
+        TextView textViewFileName;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             this.textViewName = (TextView) itemView.findViewById(R.id.textViewName);
             this.textViewDescription = (TextView) itemView.findViewById(R.id.textViewDescription);
             this.imageViewIcon = (ImageView) itemView.findViewById(R.id.imageView);
+            this.textViewFileName = (TextView) itemView.findViewById(R.id.textViewFileName);
         }
     }
 
@@ -53,10 +56,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         TextView textViewName = holder.textViewName;
         TextView textViewDescription = holder.textViewDescription;
         ImageView imageView = holder.imageViewIcon;
+        TextView textViewFileName = holder.textViewFileName;
 
         textViewName.setText(dataSet.get(listPosition).getOwner().getLogin());
         textViewDescription.setText(dataSet.get(listPosition).getDescription());
-//        imageView.setImageResource(dataSet.get(listPosition).getImage());
+        Picasso.get().load(dataSet.get(listPosition).getOwner().getAvatar_url()).into(imageView);
     }
 
     @Override

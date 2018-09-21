@@ -101,8 +101,6 @@ public class ApiClient {
         }
     }
 
-
-
     public void getPublicGists(Callback<ArrayList<Gist>> callback) {
         if (api != null) {
             Call<ArrayList<Gist>> call = api.getPublicGists();

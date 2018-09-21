@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Files implements Parcelable{
+public class File implements Parcelable{
 
 
     @SerializedName("filename")
@@ -30,19 +30,19 @@ public class Files implements Parcelable{
         dest.writeString(this.fileName);
     }
 
-    private Files(Parcel in) {
+    private File(Parcel in) {
         this.fileName = in.readString();
     }
 
-    public static final Parcelable.Creator<Files> CREATOR = new Parcelable.Creator<Files>() {
+    public static final Parcelable.Creator<File> CREATOR = new Parcelable.Creator<File>() {
         @Override
-        public Files createFromParcel(Parcel source) {
-            return new Files(source);
+        public File createFromParcel(Parcel source) {
+            return new File(source);
         }
 
         @Override
-        public Files[] newArray(int size) {
-            return new Files[size];
+        public File[] newArray(int size) {
+            return new File[size];
         }
     };
 }

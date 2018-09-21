@@ -8,10 +8,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bkwong.gistbrowserapp.R;
+import com.bkwong.gistbrowserapp.models.File;
 import com.bkwong.gistbrowserapp.models.Gist;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
@@ -58,8 +60,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         ImageView imageView = holder.imageViewIcon;
         TextView textViewFileName = holder.textViewFileName;
 
+        Map.Entry<String, File> next = dataSet.get(listPosition).getAdditionalProperties().entrySet().iterator().next();
+
         textViewName.setText(dataSet.get(listPosition).getOwner().getLogin());
         textViewDescription.setText(dataSet.get(listPosition).getDescription());
+        textViewFileName.setText(next.getValue().getFileName());
         Picasso.get().load(dataSet.get(listPosition).getOwner().getAvatar_url()).into(imageView);
     }
 

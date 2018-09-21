@@ -3,9 +3,12 @@ package com.bkwong.gistbrowserapp.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Gist implements Parcelable {
 
@@ -17,6 +20,10 @@ public class Gist implements Parcelable {
 
     @SerializedName("owner")
     private Owner owner;
+
+    @SerializedName("files")
+    private Map<String, File> files = new HashMap<String, File>();
+
 
     public String getUrl() {
         return url;
@@ -42,6 +49,15 @@ public class Gist implements Parcelable {
         this.owner = owner;
     }
 
+    @JsonAnyGetter
+    public Map<String, File> getAdditionalProperties() {
+        return this.files;
+    }
+
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, File value) {
+        this.files.put(name, value);
+    }
 
     @Override
     public int describeContents() {

@@ -22,7 +22,8 @@ import retrofit2.Response;
 
 public class MainActivity extends BaseActivity {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+//    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = "benny";
 
     private static RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -52,11 +53,6 @@ public class MainActivity extends BaseActivity {
             public void onResponse(retrofit2.Call<ArrayList<Gist>> call, Response<ArrayList<Gist>> response) {
                 Log.d(TAG, "print out the response" + response.body().toString());
                 publicGists = response.body();
-                for(Gist gist : publicGists) {
-                    Log.d(TAG, "url: " + gist.getUrl());
-                    Log.d(TAG, "description: " + gist.getDescription());
-                }
-
                 adapter = new CustomAdapter(publicGists);
                 recyclerView.setAdapter(adapter);
 
@@ -64,7 +60,7 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onFailure(retrofit2.Call<ArrayList<Gist>> call, Throwable t) {
-
+                Log.d(TAG, "print out the the failure reason" + t.getMessage());
             }
         };
         apiClient.getPublicGists(callBack);

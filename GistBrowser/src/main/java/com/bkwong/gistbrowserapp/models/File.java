@@ -11,12 +11,23 @@ public class File implements Parcelable{
     @SerializedName("filename")
     private String fileName;
 
+    @SerializedName("raw_url")
+    private String fileURL;
+
     public String getFileName() {
         return fileName;
     }
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public String getFileURL() {
+        return fileURL;
+    }
+
+    public void setFileURL(String fileURL) {
+        this.fileURL = fileURL;
     }
 
     @Override
@@ -26,12 +37,13 @@ public class File implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
         dest.writeString(this.fileName);
+        dest.writeString(this.fileURL);
     }
 
     private File(Parcel in) {
         this.fileName = in.readString();
+        this.fileURL = in.readString();
     }
 
     public static final Parcelable.Creator<File> CREATOR = new Parcelable.Creator<File>() {

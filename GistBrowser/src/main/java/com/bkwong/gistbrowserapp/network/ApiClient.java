@@ -109,5 +109,12 @@ public class ApiClient {
         }
     }
 
+    public void getPublicGists(String page, Callback<ArrayList<Gist>> callback) {
+        if (api != null) {
+            Call<ArrayList<Gist>> call = api.getPublicGistsPage(page);
+            call.enqueue(callback);
+            calls.add(call);
+        }
+    }
 
 }

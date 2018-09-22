@@ -64,7 +64,6 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         Callback<ArrayList<Gist>> callBack = new Callback<ArrayList<Gist>>() {
             @Override
             public void onResponse(retrofit2.Call<ArrayList<Gist>> call, Response<ArrayList<Gist>> response) {
-                Log.d(TAG, "response header: " + response.headers().toString());
                 publicGists = response.body();
                 adapter.addAllGist(publicGists);
             }
@@ -97,6 +96,14 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                 return isLoading;
             }
         }));
+
+
+        adapter.setOnItemClickListener(new CustomAdapter.onItemClickListener() {
+            @Override
+            public void onItemClickListener(View view, int position, Gist data) {
+                Log.d(TAG, "item clicked: " + position + "user name: " + data.getOwner().getUsernme());
+            }
+        });
 
 
     }
@@ -145,7 +152,6 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     }
 
     private void loadNext() {
-        Log.d(TAG, "loadNextPage: " + currentPage);
         Callback<ArrayList<Gist>> callBack = new Callback<ArrayList<Gist>>() {
             @Override
             public void onResponse(retrofit2.Call<ArrayList<Gist>> call, Response<ArrayList<Gist>> response) {

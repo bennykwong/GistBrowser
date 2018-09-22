@@ -8,17 +8,17 @@ import com.google.gson.annotations.SerializedName;
 public class Owner implements Parcelable {
 
     @SerializedName("login")
-    private String login;
+    private String userName;
 
     @SerializedName("avatar_url")
     private String avatar_url;
 
-    public String getLogin() {
-        return login;
+    public String getUsernme() {
+        return userName;
     }
 
     public void setLogin(String login) {
-        this.login = login;
+        this.userName = userName;
     }
 
     public String getAvatar_url() {
@@ -37,12 +37,12 @@ public class Owner implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.login);
+        dest.writeString(this.userName);
         dest.writeString(this.avatar_url);
     }
 
     private Owner(Parcel in) {
-        this.login = in.readString();
+        this.userName = in.readString();
         this.avatar_url = in.readString();
     }
 

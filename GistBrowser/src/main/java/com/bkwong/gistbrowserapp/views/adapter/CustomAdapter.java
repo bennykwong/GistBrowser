@@ -30,8 +30,9 @@ public class CustomAdapter extends RecyclerView.Adapter<RecycleViewHolder> imple
 
 
     //constructor
-    public CustomAdapter(Context context){
+    public CustomAdapter(Context context, onItemClickListener listener){
         this.context = context;
+        mItemClickListener = listener;
         dataSet = new ArrayList<>();
     }
 
@@ -44,24 +45,25 @@ public class CustomAdapter extends RecyclerView.Adapter<RecycleViewHolder> imple
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.card_layout, parent, false);
 
-        RecycleViewHolder myViewHolder = new RecycleViewHolder(view);
+        RecycleViewHolder myViewHolder = new RecycleViewHolder(view, mItemClickListener);
         return myViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(final RecycleViewHolder holder, final int listPosition) {
+    public void onBindViewHolder(RecycleViewHolder holder, int listPosition) {
 
         TextView textViewName = holder.textViewName;
         TextView textViewDescription = holder.textViewDescription;
         ImageView imageView = holder.imageViewIcon;
         TextView textViewFileName = holder.textViewFileName;
-
         Map.Entry<String, File> next = dataSet.get(listPosition).getAdditionalProperties().entrySet().iterator().next();
 
-        textViewName.setText(dataSet.get(listPosition).getOwner().getUsernme());
-        textViewDescription.setText(dataSet.get(listPosition).getDescription());
-        textViewFileName.setText(next.getValue().getFileName());
-        Picasso.get().load(dataSet.get(listPosition).getOwner().getAvatar_url()).into(imageView);
+        if (holder instanceof RecycleViewHolder) {
+            textViewName.setText(dataSet.get(listPosition).getOwner().getUsernme());
+            textViewDescription.setText(dataSet.get(listPosition).getDescription());
+            textViewFileName.setText(next.getValue().getFileName());
+            Picasso.get().load(dataSet.get(listPosition).getOwner().getAvatar_url()).into(imageView);
+        }
     }
 
     @Override
@@ -108,7 +110,7 @@ public class CustomAdapter extends RecyclerView.Adapter<RecycleViewHolder> imple
     }
 
     public interface onItemClickListener {
-        void onItemClickListener(View view, int position, Gist myData);
+        void onItemClickListener(View view, int position);
     }
 
 }

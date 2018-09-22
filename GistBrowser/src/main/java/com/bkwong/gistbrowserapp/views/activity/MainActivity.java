@@ -53,11 +53,20 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
+
+        CustomAdapter.onItemClickListener itemListener = new CustomAdapter.onItemClickListener() {
+            @Override
+            public void onItemClickListener(View view, int position) {
+                Log.d(TAG, "item clicked in position: " + position);
+            }
+        };
+        adapter = new CustomAdapter(this, itemListener);
+        recyclerView.setAdapter(adapter);
+
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refreshLayout);
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        adapter = new CustomAdapter(this);
-        recyclerView.setAdapter(adapter);
+
 
         apiClient = ApiClient.getApiClient(GistBrowserApplication.getAppContext());
 
@@ -96,14 +105,6 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                 return isLoading;
             }
         }));
-
-
-        adapter.setOnItemClickListener(new CustomAdapter.onItemClickListener() {
-            @Override
-            public void onItemClickListener(View view, int position, Gist data) {
-                Log.d(TAG, "item clicked: " + position + "user name: " + data.getOwner().getUsernme());
-            }
-        });
 
 
     }

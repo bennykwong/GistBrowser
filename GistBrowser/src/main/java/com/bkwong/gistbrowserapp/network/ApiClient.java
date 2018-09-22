@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.bkwong.gistbrowserapp.models.Gist;
+import com.bkwong.gistbrowserapp.util.Constants;
 
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
@@ -74,8 +75,8 @@ public class ApiClient {
             sslContext.init(null, trustAllCerts,
                     new java.security.SecureRandom());
             // Create an ssl socket factory with our all-trusting manager
-            final SSLSocketFactory sslSocketFactory = sslContext
-                    .getSocketFactory();
+//            final SSLSocketFactory sslSocketFactory = sslContext
+//                    .getSocketFactory();
             Authenticator auth = new TokenAuthenticator();
             OkHttpClient client = null;
                 client = new OkHttpClient.Builder()
@@ -83,14 +84,15 @@ public class ApiClient {
                         .writeTimeout(60L, TimeUnit.SECONDS)
                         .readTimeout(60L, TimeUnit.SECONDS)
                         .addNetworkInterceptor(loggingInterceptor)
-                        .sslSocketFactory(sslSocketFactory)
+                        .addInterceptor(new TokenInterceptor())
+//                        .sslSocketFactory(sslSocketFactory)
                         .authenticator(auth)
                         .retryOnConnectionFailure(true)
                         .build();
 
 
             webClient = new Retrofit.Builder()
-                    .baseUrl("https://api.github.com")
+                    .baseUrl(Constants.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(client)
                     .build();

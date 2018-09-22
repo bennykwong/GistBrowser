@@ -64,6 +64,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         Callback<ArrayList<Gist>> callBack = new Callback<ArrayList<Gist>>() {
             @Override
             public void onResponse(retrofit2.Call<ArrayList<Gist>> call, Response<ArrayList<Gist>> response) {
+                Log.d(TAG, "response header: " + response.headers().toString());
                 publicGists = response.body();
                 adapter.addAllGist(publicGists);
             }

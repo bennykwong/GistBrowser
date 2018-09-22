@@ -33,7 +33,6 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private static RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private static ArrayList<Gist> publicGists;
-    static View.OnClickListener myOnClickListener;
     ApiClient apiClient = null;
 
     private static final int PAGE_START = 1;
@@ -56,8 +55,8 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
         CustomAdapter.onItemClickListener itemListener = new CustomAdapter.onItemClickListener() {
             @Override
-            public void onItemClickListener(View view, int position) {
-                Log.d(TAG, "item clicked in position: " + position);
+            public void onItemClickListener(View view, int position, Gist gist) {
+                Log.d(TAG, "item clicked in position: " + position + " gist data: " + gist.getOwner().getUsernme());
             }
         };
         adapter = new CustomAdapter(this, itemListener);
@@ -84,8 +83,6 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         };
         apiClient.getPublicGists(callBack);
 
-
-
         recyclerView.addOnScrollListener((new CustomScrollListener(linearLayoutManager) {
             @Override
             protected void loadNextPage() {
@@ -105,7 +102,6 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                 return isLoading;
             }
         }));
-
 
     }
 

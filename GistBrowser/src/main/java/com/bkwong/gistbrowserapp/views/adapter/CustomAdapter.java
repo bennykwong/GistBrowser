@@ -2,7 +2,6 @@ package com.bkwong.gistbrowserapp.views.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +44,7 @@ public class CustomAdapter extends RecyclerView.Adapter<RecycleViewHolder> imple
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.card_layout, parent, false);
 
-        RecycleViewHolder myViewHolder = new RecycleViewHolder(view, mItemClickListener);
+        RecycleViewHolder myViewHolder = new RecycleViewHolder(view, mItemClickListener, dataSet);
         return myViewHolder;
     }
 
@@ -105,12 +104,8 @@ public class CustomAdapter extends RecyclerView.Adapter<RecycleViewHolder> imple
         }
     }
 
-    public void setOnItemClickListener(onItemClickListener mItemClickListener) {
-        this.mItemClickListener = mItemClickListener;
-    }
-
     public interface onItemClickListener {
-        void onItemClickListener(View view, int position);
+        void onItemClickListener(View view, int position, Gist data);
     }
 
 }

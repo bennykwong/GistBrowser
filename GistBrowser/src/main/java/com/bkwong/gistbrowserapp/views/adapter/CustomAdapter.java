@@ -1,5 +1,6 @@
 package com.bkwong.gistbrowserapp.views.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,12 +14,20 @@ import com.bkwong.gistbrowserapp.models.Gist;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
 
     private ArrayList<Gist> dataSet;
+    private Context context;
+
+    //constructor
+    public CustomAdapter(Context context){
+        this.context = context;
+        dataSet = new ArrayList<>();
+    }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -34,10 +43,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
             this.imageViewIcon = (ImageView) itemView.findViewById(R.id.imageView);
             this.textViewFileName = (TextView) itemView.findViewById(R.id.textViewFileName);
         }
-    }
-
-    public CustomAdapter(ArrayList<Gist> data) {
-        this.dataSet = data;
     }
 
     @Override
@@ -71,5 +76,34 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     @Override
     public int getItemCount() {
         return dataSet.size();
+    }
+
+    public void addGist(Gist gist) {
+        dataSet.add(gist);
+        notifyItemInserted(dataSet.size() - 1);
+    }
+
+    public void addAllGist(List<Gist> gistList) {
+        for (Gist gist : gistList) {
+            addGist(gist);
+        }
+    }
+
+    public void remove(Gist city) {
+        int position = dataSet.indexOf(city);
+        if (position > -1) {
+            dataSet.remove(position);
+            notifyItemRemoved(position);
+        }
+    }
+
+    public Gist getItem(int position) {
+        return dataSet.get(position);
+    }
+
+    public void clear() {
+        while (getItemCount() > 0) {
+            remove(getItem(0));
+        }
     }
 }

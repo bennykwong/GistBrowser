@@ -14,5 +14,5 @@ public interface GitHubAPI {
     Call<ArrayList<Gist>> getPublicGists();
 
     @GET("/gists/public")
-    Call<ArrayList<Gist>> getPublicGistsPage(@Query("page") String page);
+    Call<ArrayList<Gist>> getPublicGistsPage(@Query("page") int page);
 }

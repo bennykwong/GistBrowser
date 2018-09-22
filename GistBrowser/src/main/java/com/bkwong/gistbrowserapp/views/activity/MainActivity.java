@@ -28,7 +28,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 //    private static final String TAG = MainActivity.class.getSimpleName();
     private static final String TAG = "benny";
 
-    private static RecyclerView.Adapter adapter;
+    private static CustomAdapter adapter;
     private LinearLayoutManager linearLayoutManager;
     private static RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -36,19 +36,15 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     static View.OnClickListener myOnClickListener;
     ApiClient apiClient = null;
 
-    private static final int PAGE_START = 0;
+    private static final int PAGE_START = 1;
     private boolean isLoading = false;
-    private boolean isLastPage = false;
-    private int TOTAL_PAGES = 3;
     private int currentPage = PAGE_START;
 
-    private static int page = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -60,6 +56,8 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refreshLayout);
         swipeRefreshLayout.setOnRefreshListener(this);
 
+        adapter = new CustomAdapter(this);
+        recyclerView.setAdapter(adapter);
 
         apiClient = ApiClient.getApiClient(GistBrowserApplication.getAppContext());
 
@@ -67,9 +65,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             @Override
             public void onResponse(retrofit2.Call<ArrayList<Gist>> call, Response<ArrayList<Gist>> response) {
                 publicGists = response.body();
-                adapter = new CustomAdapter(publicGists);
-                recyclerView.setAdapter(adapter);
-
+                adapter.addAllGist(publicGists);
             }
 
             @Override
@@ -85,7 +81,14 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             @Override
             protected void loadNextPage() {
                 isLoading = true;
-                Log.d(TAG, "load more items");
+                currentPage++;
+
+                new Handler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadNext();
+                    }
+                });
             }
 
             @Override
@@ -115,17 +118,17 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
     @Override
     public void onRefresh() {
-        new Handler().postDelayed(new Runnable() {
+        new Handler().post(new Runnable() {
             @Override
             public void run() {
                 Callback<ArrayList<Gist>> callBack = new Callback<ArrayList<Gist>>() {
                     @Override
                     public void onResponse(retrofit2.Call<ArrayList<Gist>> call, Response<ArrayList<Gist>> response) {
                         publicGists = response.body();
-                        adapter = new CustomAdapter(publicGists);
-                        recyclerView.setAdapter(adapter);
+                        adapter.clear();
+                        adapter.addAllGist(publicGists);
                         swipeRefreshLayout.setRefreshing(false);
-                        page = 0;
+                        currentPage = PAGE_START;
                     }
 
                     @Override
@@ -135,8 +138,27 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                 };
                 apiClient.getPublicGists(callBack);
             }
-        }, 1000);
+        });
 
         swipeRefreshLayout.setRefreshing(true);
+    }
+
+    private void loadNext() {
+        Log.d(TAG, "loadNextPage: " + currentPage);
+        Callback<ArrayList<Gist>> callBack = new Callback<ArrayList<Gist>>() {
+            @Override
+            public void onResponse(retrofit2.Call<ArrayList<Gist>> call, Response<ArrayList<Gist>> response) {
+                publicGists = response.body();
+                adapter.addAllGist(publicGists);
+                isLoading = false;
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<ArrayList<Gist>> call, Throwable t) {
+                Log.d(TAG, "print out the the failure reason" + t.getMessage());
+            }
+        };
+        apiClient.getPublicGistsPages(currentPage, callBack);
+
     }
 }

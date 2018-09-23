@@ -17,7 +17,6 @@ import com.bkwong.gistbrowserapp.R;
 import com.bkwong.gistbrowserapp.controller.ApiController;
 import com.bkwong.gistbrowserapp.listeners.CustomScrollListener;
 import com.bkwong.gistbrowserapp.models.Gist;
-import com.bkwong.gistbrowserapp.network.ApiClient;
 import com.bkwong.gistbrowserapp.util.BusProvider;
 import com.bkwong.gistbrowserapp.util.Constants;
 import com.bkwong.gistbrowserapp.views.adapter.CustomAdapter;
@@ -27,8 +26,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener{
 
-//    private static final String TAG = MainActivity.class.getSimpleName();
-    private static final String TAG = "benny";
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     private static CustomAdapter adapter;
     private LinearLayoutManager linearLayoutManager;
@@ -38,7 +36,6 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private static boolean busRegistered = false;
     private MainThreadBus bus = (MainThreadBus) BusProvider.getInstance();
 
-    private ApiClient apiClient;
     private ApiController apiController;
 
     private static final int PAGE_START = 1;
@@ -72,7 +69,6 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refreshLayout);
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        apiClient = ApiClient.getApiClient(GistBrowserApplication.getAppContext());
         apiController = GistBrowserApplication.getApiController();
 
         apiController.getPublicGist(Constants.DEFAULT);

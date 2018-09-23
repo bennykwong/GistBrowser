@@ -21,7 +21,6 @@ public class GistBrowserApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        registerActivityLifecycleCallbacks(new LifeCycleHandler());
         mApiController = new ApiController(this);
         setApiManager();
         mAppContext = this;

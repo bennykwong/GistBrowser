@@ -12,11 +12,9 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import okhttp3.Authenticator;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -72,12 +70,7 @@ public class ApiClient {
             }};
 
             final SSLContext sslContext = SSLContext.getInstance("TLSv1");
-            sslContext.init(null, trustAllCerts,
-                    new java.security.SecureRandom());
-            // Create an ssl socket factory with our all-trusting manager
-//            final SSLSocketFactory sslSocketFactory = sslContext
-//                    .getSocketFactory();
-            Authenticator auth = new TokenAuthenticator();
+            sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
             OkHttpClient client = null;
                 client = new OkHttpClient.Builder()
                         .connectTimeout(60L, TimeUnit.SECONDS)
@@ -85,8 +78,6 @@ public class ApiClient {
                         .readTimeout(60L, TimeUnit.SECONDS)
                         .addNetworkInterceptor(loggingInterceptor)
                         .addInterceptor(new TokenInterceptor())
-//                        .sslSocketFactory(sslSocketFactory)
-                        .authenticator(auth)
                         .retryOnConnectionFailure(true)
                         .build();
 

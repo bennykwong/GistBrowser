@@ -15,8 +15,6 @@ public abstract class BaseController {
 
     /**
      * This method is used to receive particular events.
-     * Note: Once you don't want to receive events, make sure you call {@link
-     * #unregisterForEvents()}.
      */
     public void registerForEvents() {
         bus.register(this);

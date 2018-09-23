@@ -20,8 +20,7 @@ import java.util.Map;
 
 public class CustomAdapter extends RecyclerView.Adapter<RecycleViewHolder> implements View.OnClickListener {
 
-    //    private static final String TAG = CustomAdapter.class.getSimpleName();
-    private static final String TAG = "benny";
+        private static final String TAG = CustomAdapter.class.getSimpleName();
 
     private static ArrayList<Gist> dataSet;
     private Context context;

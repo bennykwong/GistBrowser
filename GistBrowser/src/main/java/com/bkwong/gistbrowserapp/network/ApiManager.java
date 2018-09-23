@@ -17,8 +17,7 @@ import retrofit2.Response;
 
 public class ApiManager {
 
-//    private static final String TAG = ApiManager.class.getName();
-    private static final String TAG = "benny";
+    private static final String TAG = ApiManager.class.getName();
 
     private Context context;
     private MainThreadBus bus;

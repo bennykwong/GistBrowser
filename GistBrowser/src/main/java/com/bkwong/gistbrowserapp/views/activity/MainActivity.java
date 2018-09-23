@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
 
 import com.bkwong.gistbrowserapp.events.UpdateGistsEvent;
 import com.bkwong.gistbrowserapp.GistBrowserApplication;
@@ -32,6 +33,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private LinearLayoutManager linearLayoutManager;
     private static RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private ProgressBar progressBar;
     private static ArrayList<Gist> publicGists;
     private static boolean busRegistered = false;
     private MainThreadBus bus = (MainThreadBus) BusProvider.getInstance();
@@ -53,6 +55,8 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        progressBar = (ProgressBar) findViewById(R.id.main_progress_bar);
 
         CustomAdapter.onItemClickListener itemListener = new CustomAdapter.onItemClickListener() {
             @Override
@@ -142,6 +146,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             case Constants.DEFAULT:
             default:
                 publicGists = event.getGists();
+                progressBar.setVisibility(View.GONE);
                 adapter.addAllGist(publicGists);
                 break;
             case Constants.REFRESH:

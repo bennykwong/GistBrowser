@@ -1,5 +1,6 @@
 package com.bkwong.gistbrowserapp.views.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -15,7 +16,7 @@ import com.bkwong.gistbrowserapp.GistBrowserApplication;
 import com.bkwong.gistbrowserapp.MainThreadBus;
 import com.bkwong.gistbrowserapp.R;
 import com.bkwong.gistbrowserapp.controller.ApiController;
-import com.bkwong.gistbrowserapp.listeners.CustomScrollListener;
+import com.bkwong.gistbrowserapp.Listeners.CustomScrollListener;
 import com.bkwong.gistbrowserapp.models.Gist;
 import com.bkwong.gistbrowserapp.network.ApiClient;
 import com.bkwong.gistbrowserapp.util.BusProvider;
@@ -60,9 +61,12 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         CustomAdapter.onItemClickListener itemListener = new CustomAdapter.onItemClickListener() {
             @Override
             public void onItemClickListener(View view, int position, Gist gist) {
-                Log.d(TAG, "item clicked in position: " + position + " gist data: " + gist.getOwner().getUsernme());
+                Intent detailActivity = new Intent(GistBrowserApplication.getAppContext(), DetailScreenActivity.class);
+                detailActivity.putExtra("gistData", gist);
+                startActivity(detailActivity);
             }
         };
+
         adapter = new CustomAdapter(this, itemListener);
         recyclerView.setAdapter(adapter);
 
@@ -114,7 +118,6 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             apiController.unregisterForEvents();
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

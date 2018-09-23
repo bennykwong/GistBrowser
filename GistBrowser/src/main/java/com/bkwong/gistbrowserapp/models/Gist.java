@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class Gist implements Parcelable {
@@ -22,7 +21,7 @@ public class Gist implements Parcelable {
     private Owner owner;
 
     @SerializedName("files")
-    private Map<String, File> files = new HashMap<String, File>();
+    private Map<String, File> files;
 
 
     public String getUrl() {
@@ -68,11 +67,15 @@ public class Gist implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.url);
         dest.writeString(this.description);
+        dest.writeParcelable(this.owner, flags);
+        dest.writeMap(this.files);
     }
 
     private Gist(Parcel in) {
         this.url = in.readString();
         this.description = in.readString();
+        this.owner = in.readParcelable(Owner.class.getClassLoader());
+        this.files = in.readHashMap(File.class.getClassLoader());
     }
 
     public static final Parcelable.Creator<Gist> CREATOR = new Parcelable.Creator<Gist>() {

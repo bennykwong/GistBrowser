@@ -33,7 +33,8 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private LinearLayoutManager linearLayoutManager;
     private static RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private ProgressBar progressBar;
+    private ProgressBar appLaunchProgressBar;
+    private ProgressBar nextPageProgressBar;
     private static ArrayList<Gist> publicGists;
     private static boolean busRegistered = false;
     private MainThreadBus bus = (MainThreadBus) BusProvider.getInstance();
@@ -56,7 +57,8 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        progressBar = (ProgressBar) findViewById(R.id.main_progress_bar);
+        appLaunchProgressBar = (ProgressBar) findViewById(R.id.main_progress_bar);
+        nextPageProgressBar = (ProgressBar) findViewById(R.id.next_page_progress_bar);
 
         CustomAdapter.onItemClickListener itemListener = new CustomAdapter.onItemClickListener() {
             @Override
@@ -94,6 +96,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             @Override
             protected void loadNextPage() {
                 isLoading = true;
+                nextPageProgressBar.setVisibility(View.VISIBLE);
                 currentPage++;
                 apiController.getNextPagePublicGist(Constants.GET_NEXT, currentPage);
             }
@@ -146,7 +149,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             case Constants.DEFAULT:
             default:
                 publicGists = event.getGists();
-                progressBar.setVisibility(View.GONE);
+                appLaunchProgressBar.setVisibility(View.GONE);
                 adapter.addAllGist(publicGists);
                 break;
             case Constants.REFRESH:
@@ -158,6 +161,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                 break;
             case Constants.GET_NEXT:
                 publicGists = event.getGists();
+                nextPageProgressBar.setVisibility(View.GONE);
                 adapter.addAllGist(publicGists);
                 isLoading = false;
                 break;

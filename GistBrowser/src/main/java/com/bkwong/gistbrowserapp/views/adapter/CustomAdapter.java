@@ -42,8 +42,7 @@ public class CustomAdapter extends RecyclerView.Adapter<RecycleViewHolder> imple
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.card_layout, parent, false);
 
-        RecycleViewHolder myViewHolder = new RecycleViewHolder(view, mItemClickListener, dataSet);
-        return myViewHolder;
+        return new RecycleViewHolder(view, mItemClickListener, dataSet);
     }
 
     @Override
@@ -54,11 +53,21 @@ public class CustomAdapter extends RecyclerView.Adapter<RecycleViewHolder> imple
         ImageView imageView = holder.imageViewIcon;
         TextView textViewFileName = holder.textViewFileName;
         Map.Entry<String, File> next = dataSet.get(listPosition).getAdditionalProperties().entrySet().iterator().next();
+        String fileNames = "";
+
+//        for(File file : dataSet.get(listPosition).getAdditionalProperties().values()) {
+//            if(fileNames.isEmpty()) {
+//                fileNames = file.getFileName();
+//            } else {
+//                fileNames = fileNames + "\n" + file.getFileName();
+//            }
+//        }
 
         if (holder instanceof RecycleViewHolder) {
             textViewName.setText(dataSet.get(listPosition).getOwner().getUsernme());
             textViewDescription.setText(dataSet.get(listPosition).getDescription());
             textViewFileName.setText(next.getValue().getFileName());
+//            textViewFileName.setText(fileNames);
             Picasso.get().load(dataSet.get(listPosition).getOwner().getAvatar_url()).into(imageView);
         }
     }
@@ -73,7 +82,7 @@ public class CustomAdapter extends RecyclerView.Adapter<RecycleViewHolder> imple
      * Custom methods to load/add/clear gists
      */
 
-    public void addGist(Gist gist) {
+    private void addGist(Gist gist) {
         dataSet.add(gist);
         notifyItemInserted(dataSet.size() - 1);
     }
@@ -84,7 +93,7 @@ public class CustomAdapter extends RecyclerView.Adapter<RecycleViewHolder> imple
         }
     }
 
-    public void remove(Gist city) {
+    private void remove(Gist city) {
         int position = dataSet.indexOf(city);
         if (position > -1) {
             dataSet.remove(position);
@@ -92,7 +101,7 @@ public class CustomAdapter extends RecyclerView.Adapter<RecycleViewHolder> imple
         }
     }
 
-    public Gist getItem(int position) {
+    private Gist getItem(int position) {
         return dataSet.get(position);
     }
 

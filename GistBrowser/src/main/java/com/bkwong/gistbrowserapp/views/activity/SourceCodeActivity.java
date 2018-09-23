@@ -24,6 +24,7 @@ public class SourceCodeActivity extends BaseActivity{
 
         sourceCodeWebView = (WebView) findViewById(R.id.source_code_webview);
         sourceCodeWebView.getSettings().setJavaScriptEnabled(true);
+        sourceCodeWebView.getSettings().setUseWideViewPort(true);
         sourceCodeWebView.loadUrl(data.getFileURL());
 
     }

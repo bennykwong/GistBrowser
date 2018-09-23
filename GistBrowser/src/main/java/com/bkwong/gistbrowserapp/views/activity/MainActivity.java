@@ -75,7 +75,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         apiClient = ApiClient.getApiClient(GistBrowserApplication.getAppContext());
         apiController = GistBrowserApplication.getApiController();
 
-        apiController.getPublicGist();
+        apiController.getPublicGist(false);
 
         recyclerView.addOnScrollListener((new CustomScrollListener(linearLayoutManager) {
             @Override
@@ -143,28 +143,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
     @Override
     public void onRefresh() {
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                Callback<ArrayList<Gist>> callBack = new Callback<ArrayList<Gist>>() {
-                    @Override
-                    public void onResponse(retrofit2.Call<ArrayList<Gist>> call, Response<ArrayList<Gist>> response) {
-                        publicGists = response.body();
-                        adapter.clear();
-                        adapter.addAllGist(publicGists);
-                        swipeRefreshLayout.setRefreshing(false);
-                        currentPage = PAGE_START;
-                    }
-
-                    @Override
-                    public void onFailure(retrofit2.Call<ArrayList<Gist>> call, Throwable t) {
-                        Log.d(TAG, "print out the the failure reason" + t.getMessage());
-                    }
-                };
-                apiClient.getPublicGists(callBack);
-            }
-        });
-
+        apiController.getPublicGist(true);
         swipeRefreshLayout.setRefreshing(true);
     }
 
@@ -188,7 +167,16 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
     @Subscribe
     public void updateGistsEvent(UpdateGistsEvent event) {
-        publicGists = event.getGists();
-        adapter.addAllGist(publicGists);
+        if(event.isRefresh()) {
+            adapter.clear();
+            adapter.addAllGist(publicGists);
+            publicGists = event.getGists();
+            swipeRefreshLayout.setRefreshing(false);
+            currentPage = PAGE_START;
+        } else {
+            publicGists = event.getGists();
+            adapter.addAllGist(publicGists);
+        }
     }
+
 }

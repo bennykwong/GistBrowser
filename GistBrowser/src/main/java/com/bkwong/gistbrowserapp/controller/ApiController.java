@@ -16,13 +16,8 @@ public class ApiController extends BaseController{
         super(context);
     }
 
-    public void getPublicGist() {
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                bus.post(new GetPublicGistsEvent());
-            }
-        });
+    public void getPublicGist(boolean isRefresh) {
+        bus.post(new GetPublicGistsEvent(isRefresh));
     }
 
 }

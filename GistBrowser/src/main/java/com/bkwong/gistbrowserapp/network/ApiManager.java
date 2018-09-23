@@ -32,11 +32,11 @@ public class ApiManager {
     }
 
     @Subscribe
-    public void getPublicGistsEvent(GetPublicGistsEvent event) {
+    public void getPublicGistsEvent(final GetPublicGistsEvent event) {
         Callback<ArrayList<Gist>> callBack = new Callback<ArrayList<Gist>>() {
             @Override
             public void onResponse(retrofit2.Call<ArrayList<Gist>> call, Response<ArrayList<Gist>> response) {
-                bus.post(new UpdateGistsEvent(response.body()));
+                bus.post(new UpdateGistsEvent(response.body(), event.isRefresh()));
             }
 
             @Override

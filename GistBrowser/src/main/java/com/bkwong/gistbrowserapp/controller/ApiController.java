@@ -21,8 +21,8 @@ public class ApiController extends BaseController{
         bus.post(new GetPublicGistsEvent(requestType));
     }
 
-    public void getNextPagePublicGist(String requestType) {
-        bus.post(new GetNextPageGistEvent(requestType));
+    public void getNextPagePublicGist(String requestType, int page) {
+        bus.post(new GetNextPageGistEvent(requestType, page));
     }
 
 }

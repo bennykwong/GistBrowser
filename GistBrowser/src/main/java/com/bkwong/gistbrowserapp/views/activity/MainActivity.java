@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.bkwong.gistbrowserapp.Events.GetNextPageGistEvent;
 import com.bkwong.gistbrowserapp.Events.UpdateGistsEvent;
 import com.bkwong.gistbrowserapp.GistBrowserApplication;
 import com.bkwong.gistbrowserapp.MainThreadBus;
@@ -80,7 +79,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             protected void loadNextPage() {
                 isLoading = true;
                 currentPage++;
-                bus.post(new GetNextPageGistEvent(Constants.GET_NEXT));
+                apiController.getNextPagePublicGist(Constants.GET_NEXT, currentPage);
             }
 
             @Override

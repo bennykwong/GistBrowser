@@ -60,7 +60,7 @@ public class ApiManager {
                 Log.d(TAG, "print out the the failure reason" + t.getMessage());
             }
         };
-        apiClient.getPublicGists(callBack);
+        apiClient.getPublicGistsPages(event.getPage(), callBack);
     }
 
 }

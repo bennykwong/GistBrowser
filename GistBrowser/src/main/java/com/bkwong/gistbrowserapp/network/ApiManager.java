@@ -1,12 +1,11 @@
 package com.bkwong.gistbrowserapp.network;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
 
-import com.bkwong.gistbrowserapp.Events.GetNextPageGistEvent;
-import com.bkwong.gistbrowserapp.Events.GetPublicGistsEvent;
-import com.bkwong.gistbrowserapp.Events.UpdateGistsEvent;
+import com.bkwong.gistbrowserapp.events.GetNextPageGistEvent;
+import com.bkwong.gistbrowserapp.events.GetPublicGistsEvent;
+import com.bkwong.gistbrowserapp.events.UpdateGistsEvent;
 import com.bkwong.gistbrowserapp.MainThreadBus;
 import com.bkwong.gistbrowserapp.models.Gist;
 import com.squareup.otto.Subscribe;

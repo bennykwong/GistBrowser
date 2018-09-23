@@ -1,4 +1,4 @@
-package com.bkwong.gistbrowserapp.Events;
+package com.bkwong.gistbrowserapp.events;
 
 public class GetPublicGistsEvent {
     private String requestType;

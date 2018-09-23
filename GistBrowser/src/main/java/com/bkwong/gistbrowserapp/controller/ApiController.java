@@ -2,8 +2,8 @@ package com.bkwong.gistbrowserapp.controller;
 
 import android.content.Context;
 
-import com.bkwong.gistbrowserapp.Events.GetNextPageGistEvent;
-import com.bkwong.gistbrowserapp.Events.GetPublicGistsEvent;
+import com.bkwong.gistbrowserapp.events.GetNextPageGistEvent;
+import com.bkwong.gistbrowserapp.events.GetPublicGistsEvent;
 
 public class ApiController extends BaseController{
 

@@ -1,4 +1,4 @@
-package com.bkwong.gistbrowserapp.Events;
+package com.bkwong.gistbrowserapp.events;
 
 public class GetNextPageGistEvent {
     private String requestType;

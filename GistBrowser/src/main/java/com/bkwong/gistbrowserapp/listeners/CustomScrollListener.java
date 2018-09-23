@@ -1,4 +1,4 @@
-package com.bkwong.gistbrowserapp.Listeners;
+package com.bkwong.gistbrowserapp.listeners;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;

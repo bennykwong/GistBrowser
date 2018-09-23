@@ -1,4 +1,4 @@
-package com.bkwong.gistbrowserapp.Events;
+package com.bkwong.gistbrowserapp.events;
 
 import com.bkwong.gistbrowserapp.models.Gist;
 

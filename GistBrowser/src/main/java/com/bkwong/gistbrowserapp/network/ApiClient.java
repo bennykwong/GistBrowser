@@ -73,9 +73,9 @@ public class ApiClient {
             sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
             OkHttpClient client = null;
                 client = new OkHttpClient.Builder()
-                        .connectTimeout(60L, TimeUnit.SECONDS)
-                        .writeTimeout(60L, TimeUnit.SECONDS)
-                        .readTimeout(60L, TimeUnit.SECONDS)
+                        .connectTimeout(30L, TimeUnit.SECONDS)
+                        .writeTimeout(30L, TimeUnit.SECONDS)
+                        .readTimeout(30L, TimeUnit.SECONDS)
                         .addNetworkInterceptor(loggingInterceptor)
                         .addInterceptor(new TokenInterceptor())
                         .retryOnConnectionFailure(true)

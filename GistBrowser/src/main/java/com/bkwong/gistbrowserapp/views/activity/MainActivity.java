@@ -148,8 +148,8 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                 break;
             case Constants.REFRESH:
                 adapter.clear();
-                adapter.addAllGist(publicGists);
                 publicGists = event.getGists();
+                adapter.addAllGist(publicGists);
                 swipeRefreshLayout.setRefreshing(false);
                 currentPage = PAGE_START;
                 break;

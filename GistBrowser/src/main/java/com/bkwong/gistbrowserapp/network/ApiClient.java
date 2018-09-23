@@ -119,4 +119,11 @@ public class ApiClient {
         }
     }
 
+    public static ApiClient resetApiClient(Context context) {
+        synchronized (ApiClient.class) {
+            apiClient = new ApiClient(context);
+        }
+        return apiClient;
+    }
+
 }

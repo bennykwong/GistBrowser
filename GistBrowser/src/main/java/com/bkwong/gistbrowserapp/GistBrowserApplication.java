@@ -3,6 +3,9 @@ package com.bkwong.gistbrowserapp;
 import android.content.Context;
 import android.support.multidex.MultiDexApplication;
 
+import com.bkwong.gistbrowserapp.controller.ApiController;
+import com.bkwong.gistbrowserapp.network.ApiManager;
+import com.bkwong.gistbrowserapp.util.BusProvider;
 
 /**
  * Global container to share info between different components of the application
@@ -11,13 +14,16 @@ import android.support.multidex.MultiDexApplication;
 public class GistBrowserApplication extends MultiDexApplication {
     private static Context mAppContext = null;
 
+    private static ApiManager apiManager;
+    private static MainThreadBus bus = (MainThreadBus) BusProvider.getInstance();
+    private static ApiController mApiController;
+
     @Override
     public void onCreate() {
         super.onCreate();
-
-        //register for app life cycle callbacks
         registerActivityLifecycleCallbacks(new LifeCycleHandler());
-
+        mApiController = new ApiController(this);
+        setApiManager();
         mAppContext = this;
 
     }
@@ -25,6 +31,18 @@ public class GistBrowserApplication extends MultiDexApplication {
         return mAppContext;
     }
 
+    public static ApiController getApiController()
+    {
+        return mApiController;
+    }
 
+    public synchronized static void setApiManager() {
+        if (apiManager != null) {
+            bus.unregister(apiManager);
+            apiManager = null;
+        }
+        apiManager = new ApiManager(getAppContext(), bus);
+        bus.register(apiManager);
+    }
 
 }

@@ -27,7 +27,6 @@ public class CustomAdapter extends RecyclerView.Adapter<RecycleViewHolder> imple
     private Context context;
     private static onItemClickListener mItemClickListener;
 
-
     //constructor
     public CustomAdapter(Context context, onItemClickListener listener){
         this.context = context;

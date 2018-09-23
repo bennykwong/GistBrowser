@@ -8,19 +8,19 @@ public class UpdateGistsEvent {
 
     private ArrayList<Gist> gists;
 
-    private boolean isRefresh;
+    private String requestType;
 
-    public UpdateGistsEvent(ArrayList<Gist> gists, boolean isRefresh) {
+    public UpdateGistsEvent(ArrayList<Gist> gists, String requestType) {
         this.gists = gists;
-        this.isRefresh = isRefresh;
+        this.requestType = requestType;
     }
 
     public ArrayList<Gist> getGists() {
         return gists;
     }
 
-    public boolean isRefresh() {
-        return isRefresh;
+    public String getRequestType() {
+        return requestType;
     }
 
 }

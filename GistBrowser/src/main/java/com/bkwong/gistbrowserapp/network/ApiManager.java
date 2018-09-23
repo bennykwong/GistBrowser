@@ -4,11 +4,11 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.bkwong.gistbrowserapp.Events.GetNextPageGistEvent;
 import com.bkwong.gistbrowserapp.Events.GetPublicGistsEvent;
 import com.bkwong.gistbrowserapp.Events.UpdateGistsEvent;
 import com.bkwong.gistbrowserapp.MainThreadBus;
 import com.bkwong.gistbrowserapp.models.Gist;
-import com.bkwong.gistbrowserapp.models.Gists;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -36,7 +36,23 @@ public class ApiManager {
         Callback<ArrayList<Gist>> callBack = new Callback<ArrayList<Gist>>() {
             @Override
             public void onResponse(retrofit2.Call<ArrayList<Gist>> call, Response<ArrayList<Gist>> response) {
-                bus.post(new UpdateGistsEvent(response.body(), event.isRefresh()));
+                bus.post(new UpdateGistsEvent(response.body(), event.getRequestType()));
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<ArrayList<Gist>> call, Throwable t) {
+                Log.d(TAG, "print out the the failure reason" + t.getMessage());
+            }
+        };
+        apiClient.getPublicGists(callBack);
+    }
+
+    @Subscribe
+    public void getNextPageGistsEvent(final GetNextPageGistEvent event) {
+        Callback<ArrayList<Gist>> callBack = new Callback<ArrayList<Gist>>() {
+            @Override
+            public void onResponse(retrofit2.Call<ArrayList<Gist>> call, Response<ArrayList<Gist>> response) {
+                bus.post(new UpdateGistsEvent(response.body(), event.getRequestType()));
             }
 
             @Override

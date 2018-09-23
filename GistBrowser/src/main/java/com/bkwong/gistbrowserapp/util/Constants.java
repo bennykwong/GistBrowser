@@ -7,6 +7,10 @@ public class Constants {
     public static final String TOKEN_VALUE = "";
     public static final String BASE_URL = "https://api.github.com";
 
+    //Request Types
+    public static final String DEFAULT = "DEFAULT";
+    public static final String REFRESH = "REFRESH";
+    public static final String GET_NEXT = "GET_NEXT";
 
 
 }

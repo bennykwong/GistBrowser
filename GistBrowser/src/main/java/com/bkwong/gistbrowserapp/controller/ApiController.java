@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.bkwong.gistbrowserapp.Events.GetNextPageGistEvent;
 import com.bkwong.gistbrowserapp.Events.GetPublicGistsEvent;
 
 public class ApiController extends BaseController{
@@ -16,8 +17,12 @@ public class ApiController extends BaseController{
         super(context);
     }
 
-    public void getPublicGist(boolean isRefresh) {
-        bus.post(new GetPublicGistsEvent(isRefresh));
+    public void getPublicGist(String requestType) {
+        bus.post(new GetPublicGistsEvent(requestType));
+    }
+
+    public void getNextPagePublicGist(String requestType) {
+        bus.post(new GetNextPageGistEvent(requestType));
     }
 
 }

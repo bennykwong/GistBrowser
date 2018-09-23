@@ -1,7 +1,6 @@
 package com.bkwong.gistbrowserapp.views.activity;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +10,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.bkwong.gistbrowserapp.Events.GetNextPageGistEvent;
 import com.bkwong.gistbrowserapp.Events.UpdateGistsEvent;
 import com.bkwong.gistbrowserapp.GistBrowserApplication;
 import com.bkwong.gistbrowserapp.MainThreadBus;
@@ -20,13 +20,11 @@ import com.bkwong.gistbrowserapp.listeners.CustomScrollListener;
 import com.bkwong.gistbrowserapp.models.Gist;
 import com.bkwong.gistbrowserapp.network.ApiClient;
 import com.bkwong.gistbrowserapp.util.BusProvider;
+import com.bkwong.gistbrowserapp.util.Constants;
 import com.bkwong.gistbrowserapp.views.adapter.CustomAdapter;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
-
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener{
 
@@ -75,20 +73,14 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         apiClient = ApiClient.getApiClient(GistBrowserApplication.getAppContext());
         apiController = GistBrowserApplication.getApiController();
 
-        apiController.getPublicGist(false);
+        apiController.getPublicGist(Constants.DEFAULT);
 
         recyclerView.addOnScrollListener((new CustomScrollListener(linearLayoutManager) {
             @Override
             protected void loadNextPage() {
                 isLoading = true;
                 currentPage++;
-
-                new Handler().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        loadNext();
-                    }
-                });
+                bus.post(new GetNextPageGistEvent(Constants.GET_NEXT));
             }
 
             @Override
@@ -143,39 +135,30 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
     @Override
     public void onRefresh() {
-        apiController.getPublicGist(true);
+        apiController.getPublicGist(Constants.REFRESH);
         swipeRefreshLayout.setRefreshing(true);
-    }
-
-    private void loadNext() {
-        Callback<ArrayList<Gist>> callBack = new Callback<ArrayList<Gist>>() {
-            @Override
-            public void onResponse(retrofit2.Call<ArrayList<Gist>> call, Response<ArrayList<Gist>> response) {
-                publicGists = response.body();
-                adapter.addAllGist(publicGists);
-                isLoading = false;
-            }
-
-            @Override
-            public void onFailure(retrofit2.Call<ArrayList<Gist>> call, Throwable t) {
-                Log.d(TAG, "print out the the failure reason" + t.getMessage());
-            }
-        };
-        apiClient.getPublicGistsPages(currentPage, callBack);
-
     }
 
     @Subscribe
     public void updateGistsEvent(UpdateGistsEvent event) {
-        if(event.isRefresh()) {
-            adapter.clear();
-            adapter.addAllGist(publicGists);
-            publicGists = event.getGists();
-            swipeRefreshLayout.setRefreshing(false);
-            currentPage = PAGE_START;
-        } else {
-            publicGists = event.getGists();
-            adapter.addAllGist(publicGists);
+        switch (event.getRequestType()) {
+            case Constants.DEFAULT:
+            default:
+                publicGists = event.getGists();
+                adapter.addAllGist(publicGists);
+                break;
+            case Constants.REFRESH:
+                adapter.clear();
+                adapter.addAllGist(publicGists);
+                publicGists = event.getGists();
+                swipeRefreshLayout.setRefreshing(false);
+                currentPage = PAGE_START;
+                break;
+            case Constants.GET_NEXT:
+                publicGists = event.getGists();
+                adapter.addAllGist(publicGists);
+                isLoading = false;
+                break;
         }
     }
 

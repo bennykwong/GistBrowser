@@ -1,9 +1,9 @@
 package com.bkwong.gistbrowserapp.Events;
 
-public class GetPublicGistsEvent {
+public class GetNextPageGistEvent {
     private String requestType;
 
-    public GetPublicGistsEvent(String requestType) {
+    public GetNextPageGistEvent(String requestType) {
         this.requestType = requestType;
     }
 

@@ -20,6 +20,9 @@ public class Gist implements Parcelable {
     @SerializedName("owner")
     private Owner owner;
 
+    @SerializedName("created_at")
+    private String createdTime;
+
     @SerializedName("files")
     private Map<String, File> files;
 
@@ -48,6 +51,14 @@ public class Gist implements Parcelable {
         this.owner = owner;
     }
 
+    public String getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(String createdTime) {
+        this.createdTime = createdTime;
+    }
+
     @JsonAnyGetter
     public Map<String, File> getAdditionalProperties() {
         return this.files;
@@ -67,6 +78,7 @@ public class Gist implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.url);
         dest.writeString(this.description);
+        dest.writeString(this.createdTime);
         dest.writeParcelable(this.owner, flags);
         dest.writeMap(this.files);
     }
@@ -74,6 +86,7 @@ public class Gist implements Parcelable {
     private Gist(Parcel in) {
         this.url = in.readString();
         this.description = in.readString();
+        this.createdTime = in.readString();
         this.owner = in.readParcelable(Owner.class.getClassLoader());
         this.files = in.readHashMap(File.class.getClassLoader());
     }

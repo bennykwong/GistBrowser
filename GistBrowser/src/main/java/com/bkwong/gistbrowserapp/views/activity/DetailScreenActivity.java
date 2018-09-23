@@ -17,15 +17,24 @@ import com.bkwong.gistbrowserapp.models.File;
 import com.bkwong.gistbrowserapp.models.Gist;
 import com.squareup.picasso.Picasso;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class DetailScreenActivity extends BaseActivity {
+
+    private static final String TAG = DetailScreenActivity.class.getSimpleName();
 
     Gist gistData;
     ImageView avatar;
     TextView userName;
     TextView description;
+    TextView createdTime;
     ListView fileListView;
+    Date date = null;
     ArrayList<String> fileArray = new ArrayList<>();
 
     @Override
@@ -37,11 +46,26 @@ public class DetailScreenActivity extends BaseActivity {
         avatar = (ImageView) findViewById(R.id.detail_screen_avatar);
         userName = (TextView) findViewById(R.id.detail_screen_username);
         description = (TextView) findViewById(R.id.detail_screen_description);
+        createdTime = (TextView) findViewById(R.id.detail_screen_created_time);
         fileListView = (ListView) findViewById(R.id.detail_screen_file_list);
 
         Picasso.get().load(gistData.getOwner().getAvatar_url()).into(avatar);
         userName.setText(gistData.getOwner().getUsernme());
         description.setText(gistData.getDescription());
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        format.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        try {
+            date = format.parse(gistData.getCreatedTime());
+        } catch (Exception e) {
+            Log.e(TAG, "Parse exception " + e);
+        }
+
+        PrettyTime prettyTime = new PrettyTime();
+        if(date != null) {
+            createdTime.setText("Created " + prettyTime.format(date));
+        }
 
         for (File file : gistData.getAdditionalProperties().values()) {
             fileArray.add(file.getFileName());

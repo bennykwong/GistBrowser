@@ -1,6 +1,6 @@
 package com.bkwong.gistbrowserapp.views.activity;
 
-import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.bkwong.gistbrowserapp.GistBrowserApplication;
 import com.bkwong.gistbrowserapp.R;
 import com.bkwong.gistbrowserapp.models.File;
 import com.bkwong.gistbrowserapp.models.Gist;
@@ -38,7 +39,6 @@ public class DetailScreenActivity extends BaseActivity {
         description = (TextView) findViewById(R.id.detail_screen_description);
         fileListView = (ListView) findViewById(R.id.detail_screen_file_list);
 
-
         Picasso.get().load(gistData.getOwner().getAvatar_url()).into(avatar);
         userName.setText(gistData.getOwner().getUsernme());
         description.setText(gistData.getDescription());
@@ -54,9 +54,9 @@ public class DetailScreenActivity extends BaseActivity {
         fileListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("benny", "file name is: " + gistData.getAdditionalProperties().get((String) parent.getItemAtPosition(position)).getFileName());
-                Log.d("benny", "file url is: " + gistData.getAdditionalProperties().get((String) parent.getItemAtPosition(position)).getFileURL());
-
+                Intent sourceCodeActivity = new Intent(GistBrowserApplication.getAppContext(), SourceCodeActivity.class);
+                sourceCodeActivity.putExtra("fileData", gistData.getAdditionalProperties().get((String) parent.getItemAtPosition(position)));
+                startActivity(sourceCodeActivity);
             }
         });
     }

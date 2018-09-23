@@ -7,7 +7,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class File implements Parcelable{
 
-
     @SerializedName("filename")
     private String fileName;
 

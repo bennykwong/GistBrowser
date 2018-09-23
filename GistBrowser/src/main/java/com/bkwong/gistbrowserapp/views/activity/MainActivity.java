@@ -77,6 +77,19 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
         apiController.getPublicGist(Constants.DEFAULT);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(busRegistered ==false && bus != null) {
+            bus.register(this);
+            busRegistered = true;
+        }
+        if (apiController != null) {
+            apiController.registerForEvents();
+        }
+
         recyclerView.addOnScrollListener((new CustomScrollListener(linearLayoutManager) {
             @Override
             protected void loadNextPage() {
@@ -90,19 +103,6 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                 return isLoading;
             }
         }));
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(busRegistered ==false && bus != null) {
-            bus.register(this);
-            busRegistered = true;
-        }
-        if (apiController != null) {
-            apiController.registerForEvents();
-        }
 
     }
 

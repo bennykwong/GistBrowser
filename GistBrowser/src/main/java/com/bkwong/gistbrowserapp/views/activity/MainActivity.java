@@ -83,16 +83,33 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
         if(busRegistered ==false && bus != null) {
             bus.register(this);
             busRegistered = true;
         }
+
         if (apiController != null) {
             apiController.registerForEvents();
         }
+    }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(busRegistered == true && bus != null) {
+            bus.unregister(this);
+            busRegistered = false;
+        }
+        if (apiController != null) {
+            apiController.unregisterForEvents();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         recyclerView.addOnScrollListener((new CustomScrollListener(linearLayoutManager) {
             @Override
             protected void loadNextPage() {
@@ -113,13 +130,6 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     @Override
     protected void onPause() {
         super.onPause();
-        if(busRegistered == true && bus != null) {
-            bus.unregister(this);
-            busRegistered = false;
-        }
-        if (apiController != null) {
-            apiController.unregisterForEvents();
-        }
     }
 
     @Override

@@ -6,6 +6,7 @@ import android.support.multidex.MultiDexApplication;
 import com.bkwong.gistbrowserapp.controller.ApiController;
 import com.bkwong.gistbrowserapp.network.ApiManager;
 import com.bkwong.gistbrowserapp.util.BusProvider;
+import com.squareup.otto.Bus;
 
 /**
  * Global container to share info between different components of the application
@@ -15,7 +16,7 @@ public class GistBrowserApplication extends MultiDexApplication {
     private static Context mAppContext = null;
 
     private static ApiManager apiManager;
-    private static MainThreadBus bus = (MainThreadBus) BusProvider.getInstance();
+    private static Bus bus = BusProvider.getInstance();
     private static ApiController mApiController;
 
     @Override

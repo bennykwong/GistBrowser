@@ -7,8 +7,8 @@ import com.bkwong.gistbrowserapp.events.ErrorEvent;
 import com.bkwong.gistbrowserapp.events.GetNextPageGistEvent;
 import com.bkwong.gistbrowserapp.events.GetPublicGistsEvent;
 import com.bkwong.gistbrowserapp.events.UpdateGistsEvent;
-import com.bkwong.gistbrowserapp.MainThreadBus;
 import com.bkwong.gistbrowserapp.models.Gist;
+import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -21,10 +21,10 @@ public class ApiManager {
     private static final String TAG = ApiManager.class.getName();
 
     private Context context;
-    private MainThreadBus bus;
+    private Bus bus;
     private ApiClient apiClient;
 
-    public ApiManager(Context context, MainThreadBus bus) {
+    public ApiManager(Context context, Bus bus) {
         this.context = context;
         this.bus = bus;
         this.apiClient = ApiClient.resetApiClient(this.context);

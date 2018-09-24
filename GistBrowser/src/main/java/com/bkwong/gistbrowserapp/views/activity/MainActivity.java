@@ -14,7 +14,6 @@ import android.widget.ProgressBar;
 import com.bkwong.gistbrowserapp.events.ErrorEvent;
 import com.bkwong.gistbrowserapp.events.UpdateGistsEvent;
 import com.bkwong.gistbrowserapp.GistBrowserApplication;
-import com.bkwong.gistbrowserapp.MainThreadBus;
 import com.bkwong.gistbrowserapp.R;
 import com.bkwong.gistbrowserapp.controller.ApiController;
 import com.bkwong.gistbrowserapp.listeners.CustomScrollListener;
@@ -22,6 +21,7 @@ import com.bkwong.gistbrowserapp.models.Gist;
 import com.bkwong.gistbrowserapp.util.BusProvider;
 import com.bkwong.gistbrowserapp.util.Constants;
 import com.bkwong.gistbrowserapp.views.adapter.CustomAdapter;
+import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private ProgressBar nextPageProgressBar;
     private static ArrayList<Gist> publicGists;
     private static boolean busRegistered = false;
-    private MainThreadBus bus = (MainThreadBus) BusProvider.getInstance();
+    private Bus bus = BusProvider.getInstance();
 
     private ApiController apiController;
 

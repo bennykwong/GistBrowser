@@ -2,12 +2,12 @@ package com.bkwong.gistbrowserapp.controller;
 
 import android.content.Context;
 
-import com.bkwong.gistbrowserapp.MainThreadBus;
 import com.bkwong.gistbrowserapp.util.BusProvider;
+import com.squareup.otto.Bus;
 
 public abstract class BaseController {
     public Context context;
-    public MainThreadBus bus = (MainThreadBus) BusProvider.getInstance();
+    public Bus bus = BusProvider.getInstance();
 
     public BaseController(Context context) {
         this.context = context;

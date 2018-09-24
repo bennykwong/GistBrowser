@@ -12,5 +12,9 @@ public class Constants {
     public static final String REFRESH = "REFRESH";
     public static final String GET_NEXT = "GET_NEXT";
 
+    public static final int ERROR_401 = 401;
+    public static final int ERROR_403 = 403;
+
+
 
 }

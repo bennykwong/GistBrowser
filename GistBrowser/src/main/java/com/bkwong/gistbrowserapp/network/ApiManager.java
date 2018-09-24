@@ -38,13 +38,13 @@ public class ApiManager {
                 if(response.body() != null) {
                     bus.post(new UpdateGistsEvent(response.body(), event.getRequestType()));
                 } else {
-                    bus.post(new ErrorEvent());
+                    bus.post(new ErrorEvent(response.message(), response.code()));
                 }
             }
 
             @Override
             public void onFailure(retrofit2.Call<ArrayList<Gist>> call, Throwable t) {
-                Log.d(TAG, "print out the the failure reason" + t.getMessage());
+                Log.d(TAG, "Failed: " + t.getMessage());
             }
         };
         apiClient.getPublicGists(callBack);
@@ -58,13 +58,13 @@ public class ApiManager {
                 if(response.body() != null) {
                     bus.post(new UpdateGistsEvent(response.body(), event.getRequestType()));
                 } else {
-                    bus.post(new ErrorEvent());
+                    bus.post(new ErrorEvent(response.message(), response.code()));
                 }
             }
 
             @Override
             public void onFailure(retrofit2.Call<ArrayList<Gist>> call, Throwable t) {
-                Log.d(TAG, "print out the the failure reason" + t.getMessage());
+                Log.e(TAG, "Failed: " + t.getMessage());
             }
         };
         apiClient.getPublicGistsPages(event.getPage(), callBack);

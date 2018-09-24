@@ -159,8 +159,20 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         nextPageProgressBar.setVisibility(View.GONE);
         appLaunchProgressBar.setVisibility(View.GONE);
         AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-        alertDialog.setTitle(getString(R.string.error_dialog_title));
-        alertDialog.setMessage(getString(R.string.error_dialog_message));
+        switch (event.getErrorCode()) {
+            case Constants.ERROR_401:
+                alertDialog.setTitle(getString(R.string.error_401_title));
+                alertDialog.setMessage(getString(R.string.error_401_message));
+                break;
+            case Constants.ERROR_403:
+                alertDialog.setTitle(getString(R.string.error_403_title));
+                alertDialog.setMessage(getString(R.string.error_403_message));
+                break;
+            default:
+                alertDialog.setTitle(getString(R.string.error_dialog_title));
+                alertDialog.setMessage(getString(R.string.error_dialog_message));
+                break;
+        }
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {

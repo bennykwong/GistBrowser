@@ -3,5 +3,9 @@
     <string name="action_settings">Settings</string>
     <string name="error_dialog_title">Cannot Connect</string>
     <string name="error_dialog_message">Having trouble connecting to server. Please try again later.</string>
+    <string name="error_401_title">Error 401: Unauthorized</string>
+    <string name="error_401_message">Authentication error. Please check your API key.</string>
+    <string name="error_403_title">Error 403: API rate limit exceeded</string>
+    <string name="error_403_message">Please use a new API key or try again later.</string>
     <string name="ok">OK</string>
 </resources>

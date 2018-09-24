@@ -1,5 +1,7 @@
 package com.bkwong.gistbrowserapp.views.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -9,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.bkwong.gistbrowserapp.events.ErrorEvent;
 import com.bkwong.gistbrowserapp.events.UpdateGistsEvent;
 import com.bkwong.gistbrowserapp.GistBrowserApplication;
 import com.bkwong.gistbrowserapp.MainThreadBus;
@@ -149,6 +152,23 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                 isLoading = false;
                 break;
         }
+    }
+
+    @Subscribe
+    public void errorEvent(ErrorEvent event) {
+        nextPageProgressBar.setVisibility(View.GONE);
+        appLaunchProgressBar.setVisibility(View.GONE);
+        AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+        alertDialog.setTitle(getString(R.string.error_dialog_title));
+        alertDialog.setMessage(getString(R.string.error_dialog_message));
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        finish();
+                    }
+                });
+        alertDialog.show();
     }
 
 }

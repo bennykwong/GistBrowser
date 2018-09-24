@@ -3,6 +3,7 @@ package com.bkwong.gistbrowserapp.network;
 import android.content.Context;
 import android.util.Log;
 
+import com.bkwong.gistbrowserapp.events.ErrorEvent;
 import com.bkwong.gistbrowserapp.events.GetNextPageGistEvent;
 import com.bkwong.gistbrowserapp.events.GetPublicGistsEvent;
 import com.bkwong.gistbrowserapp.events.UpdateGistsEvent;
@@ -34,7 +35,11 @@ public class ApiManager {
         Callback<ArrayList<Gist>> callBack = new Callback<ArrayList<Gist>>() {
             @Override
             public void onResponse(retrofit2.Call<ArrayList<Gist>> call, Response<ArrayList<Gist>> response) {
-                bus.post(new UpdateGistsEvent(response.body(), event.getRequestType()));
+                if(response.body() != null) {
+                    bus.post(new UpdateGistsEvent(response.body(), event.getRequestType()));
+                } else {
+                    bus.post(new ErrorEvent());
+                }
             }
 
             @Override
@@ -50,7 +55,11 @@ public class ApiManager {
         Callback<ArrayList<Gist>> callBack = new Callback<ArrayList<Gist>>() {
             @Override
             public void onResponse(retrofit2.Call<ArrayList<Gist>> call, Response<ArrayList<Gist>> response) {
-                bus.post(new UpdateGistsEvent(response.body(), event.getRequestType()));
+                if(response.body() != null) {
+                    bus.post(new UpdateGistsEvent(response.body(), event.getRequestType()));
+                } else {
+                    bus.post(new ErrorEvent());
+                }
             }
 
             @Override

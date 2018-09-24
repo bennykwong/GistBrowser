@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Gist Browser</string>
     <string name="action_settings">Settings</string>
+    <string name="error_dialog_title">Cannot Connect</string>
+    <string name="error_dialog_message">Having trouble connecting to server. Please try again later.</string>
+    <string name="ok">OK</string>
 </resources>
